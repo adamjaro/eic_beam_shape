@@ -1,0 +1,7 @@
+build/
+*.py~
+*.pyc
+*.pdf
+*.png
+*.mp4
+*.root
