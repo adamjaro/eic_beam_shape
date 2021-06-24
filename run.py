@@ -7,7 +7,7 @@ import sys
 
 import ROOT as rt
 from ROOT import gPad, gROOT, gStyle, gSystem, TCanvas
-from ROOT import TDatabasePDG, TVector3, TH1D
+from ROOT import TDatabasePDG, TVector3, TH1D, TMath
 
 sys.path.append("./python")
 from beam_lin import beam_lin
@@ -40,20 +40,37 @@ def main():
     lib.bunch_rotate_y(b1, c_double(-cross_angle/2.))
 
     me = TDatabasePDG.Instance().GetParticle(11).Mass()
+    b1_p = TMath.Sqrt(cf.flt("Ee")**2 - me**2)
     b1_dir = TVector3(0, 0, -1)
-    lib.bunch_set_kinematics(b1, cf("Ee"), c_double(me), c_double(b1_dir.x()), c_double(b1_dir.y()), c_double(b1_dir.z()))
+    lib.bunch_set_kinematics(b1, cf("Ee"), c_double(b1_p), c_double(b1_dir.x()), c_double(b1_dir.y()), c_double(b1_dir.z()))
 
-    #proton bunch
+    #proton/nucleus bunch
     b2 = lib.make_bunch(cf.int("p_np"), cf("p_rmsx"), cf("p_bsx"), cf("p_rmsy"), cf("p_bsy"), cf("p_rmsz"))
     lib.bunch_set_color(b2, rt.kRed)
     #lib.bunch_rotate_y(b2, c_double(-cross_angle))
     lib.bunch_rotate_y(b2, c_double(-cross_angle/2.))
 
+    #bunch kinematics for proton/nucleus
+    nA = 1
+    nZ = 1
+    if cf.has_option("A"):
+        nA = cf.int("A")
+    if cf.has_option("Z"):
+        nZ = cf.int("Z")
     mp = TDatabasePDG.Instance().GetParticle(2212).Mass()
+    nmass = mp*nA
+    b2_p = TMath.Sqrt( cf.flt("Ep")**2 - mp**2 )*nZ
+    b2_en = TMath.Sqrt( b2_p**2 + nmass**2 )
+    #print("en: ", b2_en/nA)
+
+    #direction for proton/nucleus bunch
     b2_dir = TVector3(0, 0, 1)
     b2_dir.RotateY(-cross_angle*1e-3)
+    #b2_dir = TVector3(TMath.Sin(cross_angle*1e-3), 0, TMath.Cos(cross_angle*1e-3))
+    #print(b2_dir.x(), b2_dir.y(), b2_dir.z())
+    #print(TMath.Sin(cross_angle*1e-3), TMath.Cos(cross_angle*1e-3))
     b2_dir.RotateX(y_angle*1e-6)
-    lib.bunch_set_kinematics(b2, cf("Ep"), c_double(mp), c_double(b2_dir.x()), c_double(b2_dir.y()), c_double(b2_dir.z()))
+    lib.bunch_set_kinematics(b2, c_double(b2_en), c_double(b2_p), c_double(b2_dir.x()), c_double(b2_dir.y()), c_double(b2_dir.z()))
 
     #put bunches to the simulation
     lib.sim_add_bunch(sim, b2)
@@ -281,7 +298,7 @@ def evolution(lib, sim, cross_angle):
 #_____________________________________________________________________________
 def make_plot_pairs(lib, sim, cross_angle):
 
-    time = 0.15
+    time = 0.
 
     #maximum for z pairs
     zpmax = lib.sim_get_hzmax(sim)
@@ -290,7 +307,7 @@ def make_plot_pairs(lib, sim, cross_angle):
 
     can = TCanvas("c1","c1",950,950)
 
-    create_plot_pairs(lib, sim, cross_angle, can, zpmax, time, "01fig.pdf")
+    create_plot_pairs(lib, sim, cross_angle, can, zpmax, time, "01fig.png")
 
 #make_plot_pairs
 
@@ -306,7 +323,7 @@ def create_plot_pairs(lib, sim, cross_angle, can, zpmax, time, outnam):
     tsiz = 0.045
     tsiz2 = 0.04
 
-    invert = False
+    invert = True
 
     #electron and proton beams
     beam_el = beam_lin(zmin, zmax)

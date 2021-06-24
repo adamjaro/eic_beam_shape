@@ -72,11 +72,14 @@ void bunch::rotate_y(double a) {
 }//rotate_y
 
 //_____________________________________________________________________________
-void bunch::set_kinematics(double en, double m, double dx, double dy, double dz) {
+void bunch::set_kinematics(double en, double p, double dx, double dy, double dz) {
 
   auto vec = TLorentzVector();
-  vec.SetPxPyPzE(0, 0, sqrt(en*en-m*m), en);
+  vec.SetPxPyPzE(0, 0, p, en);
   double beta = vec.Beta();
+
+  //cout << beta << endl;
+  //cout << vec.Gamma() << endl;
 
   double light = 299.792; // mm/ns
 

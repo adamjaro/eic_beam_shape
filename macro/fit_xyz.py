@@ -191,9 +191,10 @@ def fit_xyz():
 
     #nam = "../sim_noy.root"
     #nam = "../sim_y.root"
-    nam = "../sim_5.root"
+    #nam = "../sim_5.root"
     #nam = "../sim_10.root"
     #nam = "../sim_18.root"
+    nam = "../sim.root"
 
     #title = ", no y-angle"
     #title = ", y-angle included"

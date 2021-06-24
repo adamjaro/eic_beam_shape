@@ -27,4 +27,9 @@ class read_con:
 
         return self.con.getint("main", par)
 
+    #_____________________________________________________________________________
+    def has_option(self, par):
+
+        return self.con.has_option("main", par)
+
 
