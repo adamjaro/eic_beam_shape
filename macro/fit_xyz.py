@@ -28,8 +28,10 @@ def main():
 def fit_x(nam=None, out="01fig.pdf", title=None):
 
     if nam is None:
-        nam = "../sim_noy.root"
+        #nam = "../sim_noy.root"
         #nam = "../sim_y.root"
+        nam = "../sim.root"
+        print("Local input: ", nam)
 
     inp = TFile.Open(nam)
     hx = inp.Get("hxt")
@@ -70,10 +72,16 @@ def fit_x(nam=None, out="01fig.pdf", title=None):
     ax.set_ylim([0, None])
 
     leg = legend()
+    leg.add_entry(leg_txt(), "Bunch overlap in $x$")
     leg.add_entry(leg_lin("red"), "Gaussian fit")
-    leg.add_entry(leg_txt(), "$\mu$ (mm): {0:.4f} $\pm$ {1:.4f}".format( pars[0], np.sqrt(cov[0,0]) ))
-    leg.add_entry(leg_txt(), "$\sigma$ (mm): {0:.4f} $\pm$ {1:.4f}".format( pars[1], np.sqrt(cov[1,1]) ))
+    leg.add_entry(leg_txt(), "$\mu_x$ (mm): {0:.4f} $\pm$ {1:.4f}".format( pars[0], np.sqrt(cov[0,0]) ))
+    leg.add_entry(leg_txt(), "$\sigma_x$ (mm): {0:.4f} $\pm$ {1:.4f}".format( pars[1], np.sqrt(cov[1,1]) ))
     leg.draw(plt, col)
+
+    #log the results
+    log = open("out.txt", "a+")
+    log.write( "    $\mu_x$ (mm):    {0:.4f} $\pm$ {1:.4f}\n".format( pars[0], np.sqrt(cov[0,0]) ) )
+    log.write( "    $\sigma_x$ (mm): {0:.4f} $\pm$ {1:.4f}\n\n".format( pars[1], np.sqrt(cov[1,1]) ) )
 
     fig.savefig(out, bbox_inches = "tight")
 
@@ -83,8 +91,10 @@ def fit_x(nam=None, out="01fig.pdf", title=None):
 def fit_y(nam=None, out="01fig.pdf", title=None):
 
     if nam is None:
-        nam = "../sim_noy.root"
+        #nam = "../sim_noy.root"
         #nam = "../sim_y.root"
+        nam = "../sim.root"
+        print("Local input: ", nam)
 
     inp = TFile.Open(nam)
     hx = inp.Get("hyt")
@@ -124,10 +134,16 @@ def fit_y(nam=None, out="01fig.pdf", title=None):
     ax.set_ylim([0, None])
 
     leg = legend()
+    leg.add_entry(leg_txt(), "Bunch overlap in $y$")
     leg.add_entry(leg_lin("red"), "Gaussian fit")
-    leg.add_entry(leg_txt(), "$\mu$ (\si{\micro\meter}): "+"{0:.4f} $\pm$ {1:.4f}".format( pars[0]*1e3, np.sqrt(cov[0,0]*1e3) ))
-    leg.add_entry(leg_txt(), "$\sigma$ (\si{\micro\meter}): "+"{0:.4f} $\pm$ {1:.4f}".format( pars[1]*1e3, np.sqrt(cov[1,1]*1e3) ))
+    leg.add_entry(leg_txt(), "$\mu_y$ (\si{\micro\meter}): "+"{0:.4f} $\pm$ {1:.4f}".format( pars[0]*1e3, np.sqrt(cov[0,0]*1e3) ))
+    leg.add_entry(leg_txt(), "$\sigma_y$ (\si{\micro\meter}): "+"{0:.4f} $\pm$ {1:.4f}".format( pars[1]*1e3, np.sqrt(cov[1,1]*1e3) ))
     leg.draw(plt, col)
+
+    #log the results
+    log = open("out.txt", "a+")
+    log.write( "    $\mu_y$ (\si{\micro\meter}):    "+"{0:.4f} $\pm$ {1:.4f}\n".format( pars[0]*1e3, np.sqrt(cov[0,0]*1e3) ) )
+    log.write( "    $\sigma_y$ (\si{\micro\meter}): "+"{0:.4f} $\pm$ {1:.4f}\n\n".format( pars[1]*1e3, np.sqrt(cov[1,1]*1e3) ) )
 
     fig.savefig(out, bbox_inches = "tight")
 
@@ -137,8 +153,10 @@ def fit_y(nam=None, out="01fig.pdf", title=None):
 def fit_z(nam=None, out="01fig.pdf", title=None):
 
     if nam is None:
-        nam = "../sim_noy.root"
+        #nam = "../sim_noy.root"
         #nam = "../sim_y.root"
+        nam = "../sim.root"
+        print("Local input: ", nam)
 
     inp = TFile.Open(nam)
     hx = inp.Get("hzt")
@@ -177,10 +195,16 @@ def fit_z(nam=None, out="01fig.pdf", title=None):
     ax.set_ylim([0, None])
 
     leg = legend()
+    leg.add_entry(leg_txt(), "Bunch overlap in $z$")
     leg.add_entry(leg_lin("red"), "Gaussian fit")
-    leg.add_entry(leg_txt(), "$\mu$ (mm): {0:.2f} $\pm$ {1:.2f}".format( pars[0], np.sqrt(cov[0,0]) ))
-    leg.add_entry(leg_txt(), "$\sigma$ (mm): {0:.2f} $\pm$ {1:.2f}".format( pars[1], np.sqrt(cov[1,1]) ))
+    leg.add_entry(leg_txt(), "$\mu_z$ (mm): {0:.2f} $\pm$ {1:.2f}".format( pars[0], np.sqrt(cov[0,0]) ))
+    leg.add_entry(leg_txt(), "$\sigma_z$ (mm): {0:.2f} $\pm$ {1:.2f}".format( pars[1], np.sqrt(cov[1,1]) ))
     leg.draw(plt, col)
+
+    #log the results
+    log = open("out.txt", "a+")
+    log.write( "    $\mu_z$ (mm):    {0:.2f} $\pm$ {1:.2f}\n".format( pars[0], np.sqrt(cov[0,0]) ) )
+    log.write( "    $\sigma_z$ (mm): {0:.2f} $\pm$ {1:.2f}\n".format( pars[1], np.sqrt(cov[1,1]) ) )
 
     fig.savefig(out, bbox_inches = "tight")
 
@@ -203,9 +227,18 @@ def fit_xyz():
     os.system("rm -rf tmp")
     os.system("mkdir tmp")
 
-    fit_x(nam, "tmp/x.pdf", "Overlap in $x$"+title)
-    fit_y(nam, "tmp/y.pdf", "Overlap in $y$"+title)
-    fit_z(nam, "tmp/z.pdf", "Overlap in $z$"+title)
+    #fit_x(nam, "tmp/x.pdf", "Overlap in $x$"+title)
+    #fit_y(nam, "tmp/y.pdf", "Overlap in $y$"+title)
+    #fit_z(nam, "tmp/z.pdf", "Overlap in $z$"+title)
+
+    #log the results (done in the individual functions)
+    out = open("out.txt", "w")
+
+    fit_x(nam, "tmp/x.pdf")
+    fit_y(nam, "tmp/y.pdf")
+    fit_z(nam, "tmp/z.pdf")
+
+    out.close()
 
     os.system("pdfjam --nup 3x1 --papersize '{30in,8in}' --outfile 01fig.pdf tmp/x.pdf tmp/y.pdf tmp/z.pdf")
     os.system("rm -rf tmp")

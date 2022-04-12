@@ -79,7 +79,7 @@ def main():
     lib.sim_set_bins(sim, cf.int("nx"), cf("xmin"), cf("xmax"), cf.int("ny"), cf("ymin"), cf("ymax"), cf.int("nz"), cf("zmin"), cf("zmax"))
 
     #select the function
-    iplot = 5
+    iplot = 6
 
     func = []
     func.append( make_plot ) # 0
@@ -405,7 +405,8 @@ def video_pairs(lib, sim, cross_angle):
     tmax = 0.6
     nstep = 200
 
-    out = "movie.mp4"
+    #out = "movie.mp4"
+    out = "movie.avi"
 
     #maximum for z pairs
     zpmax = lib.sim_get_hzmax(sim)
@@ -430,7 +431,8 @@ def video_pairs(lib, sim, cross_angle):
         nam = "tmp/fig_"+"{0:04d}".format(i)+".png"
         create_plot_pairs(lib, sim, cross_angle, can, zpmax, time, nam)
 
-    os.system("ffmpeg -r 30 -i tmp/fig_%04d.png -r 30 "+out)
+    #os.system("ffmpeg -r 30 -i tmp/fig_%04d.png -r 30 "+out)
+    os.system("ffmpeg -r 30 -i tmp/fig_%04d.png -q:v 2 "+out)
     os.system("rm -rf tmp")
 
 #video_pairs
