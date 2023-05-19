@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 #import ctypes
-from ctypes import CDLL, c_double
+from ctypes import CDLL, c_double, c_void_p
 import os
 import sys
 
@@ -33,10 +33,13 @@ def main():
     y_angle = cf.flt("y_angle") # urad
 
     #simulation instance
-    sim = lib.make_sim()
+    lib.make_sim.restype = c_void_p
+    lib.make_bunch.restype = c_void_p
+
+    sim = c_void_p( lib.make_sim() )
 
     #electron bunch
-    b1 = lib.make_bunch(cf.int("e_np"), cf("e_rmsx"), cf("e_bsx"), cf("e_rmsy"), cf("e_bsy"), cf("e_rmsz"))
+    b1 = c_void_p( lib.make_bunch(cf.int("e_np"), cf("e_rmsx"), cf("e_bsx"), cf("e_rmsy"), cf("e_bsy"), cf("e_rmsz")) )
     lib.bunch_rotate_y(b1, c_double(-cross_angle/2.))
 
     me = TDatabasePDG.Instance().GetParticle(11).Mass()
@@ -45,7 +48,7 @@ def main():
     lib.bunch_set_kinematics(b1, cf("Ee"), c_double(b1_p), c_double(b1_dir.x()), c_double(b1_dir.y()), c_double(b1_dir.z()))
 
     #proton/nucleus bunch
-    b2 = lib.make_bunch(cf.int("p_np"), cf("p_rmsx"), cf("p_bsx"), cf("p_rmsy"), cf("p_bsy"), cf("p_rmsz"))
+    b2 = c_void_p( lib.make_bunch(cf.int("p_np"), cf("p_rmsx"), cf("p_bsx"), cf("p_rmsy"), cf("p_bsy"), cf("p_rmsz")) )
     lib.bunch_set_color(b2, rt.kRed)
     #lib.bunch_rotate_y(b2, c_double(-cross_angle))
     lib.bunch_rotate_y(b2, c_double(-cross_angle/2.))
@@ -405,8 +408,8 @@ def video_pairs(lib, sim, cross_angle):
     tmax = 0.6
     nstep = 200
 
-    #out = "movie.mp4"
-    out = "movie.avi"
+    out = "movie.mp4"
+    #out = "movie.avi"
 
     #maximum for z pairs
     zpmax = lib.sim_get_hzmax(sim)
@@ -431,9 +434,9 @@ def video_pairs(lib, sim, cross_angle):
         nam = "tmp/fig_"+"{0:04d}".format(i)+".png"
         create_plot_pairs(lib, sim, cross_angle, can, zpmax, time, nam)
 
-    #os.system("ffmpeg -r 30 -i tmp/fig_%04d.png -r 30 "+out)
-    os.system("ffmpeg -r 30 -i tmp/fig_%04d.png -q:v 2 "+out)
-    os.system("rm -rf tmp")
+    os.system("ffmpeg -r 30 -i tmp/fig_%04d.png "+out)
+    #os.system("ffmpeg -r 30 -i tmp/fig_%04d.png -q:v 2 "+out)
+    #os.system("rm -rf tmp")
 
 #video_pairs
 
