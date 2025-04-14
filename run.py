@@ -82,7 +82,7 @@ def main():
     lib.sim_set_bins(sim, cf.int("nx"), cf("xmin"), cf("xmax"), cf.int("ny"), cf("ymin"), cf("ymax"), cf.int("nz"), cf("zmin"), cf("zmax"))
 
     #select the function
-    iplot = 6
+    iplot = 4
 
     func = []
     func.append( make_plot ) # 0

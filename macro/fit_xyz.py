@@ -80,8 +80,10 @@ def fit_x(nam=None, out="01fig.pdf", title=None):
 
     #log the results
     log = open("out.txt", "a+")
-    log.write( "    $\mu_x$ (mm):    {0:.4f} $\pm$ {1:.4f}\n".format( pars[0], np.sqrt(cov[0,0]) ) )
-    log.write( "    $\sigma_x$ (mm): {0:.4f} $\pm$ {1:.4f}\n\n".format( pars[1], np.sqrt(cov[1,1]) ) )
+    #log.write( "    $\mu_x$ (mm):    {0:.4f} $\pm$ {1:.4f}\n".format( pars[0], np.sqrt(cov[0,0]) ) )
+    #log.write( "    $\sigma_x$ (mm): {0:.4f} $\pm$ {1:.4f}\n\n".format( pars[1], np.sqrt(cov[1,1]) ) )
+    log.write( "    $\mu_x$ (mm):    {0:.6f} $\pm$ {1:.6f}\n".format( pars[0], np.sqrt(cov[0,0]) ) )
+    log.write( "    $\sigma_x$ (mm): {0:.6f} $\pm$ {1:.6f}\n\n".format( pars[1], np.sqrt(cov[1,1]) ) )
 
     fig.savefig(out, bbox_inches = "tight")
 
@@ -142,8 +144,10 @@ def fit_y(nam=None, out="01fig.pdf", title=None):
 
     #log the results
     log = open("out.txt", "a+")
-    log.write( "    $\mu_y$ (\si{\micro\meter}):    "+"{0:.4f} $\pm$ {1:.4f}\n".format( pars[0]*1e3, np.sqrt(cov[0,0]*1e3) ) )
-    log.write( "    $\sigma_y$ (\si{\micro\meter}): "+"{0:.4f} $\pm$ {1:.4f}\n\n".format( pars[1]*1e3, np.sqrt(cov[1,1]*1e3) ) )
+    #log.write( "    $\mu_y$ (\si{\micro\meter}):    "+"{0:.4f} $\pm$ {1:.4f}\n".format( pars[0]*1e3, np.sqrt(cov[0,0]*1e3) ) )
+    #log.write( "    $\sigma_y$ (\si{\micro\meter}): "+"{0:.4f} $\pm$ {1:.4f}\n\n".format( pars[1]*1e3, np.sqrt(cov[1,1]*1e3) ) )
+    log.write( "    $\mu_y$ (\si{\micro\meter}):    "+"{0:.6f} $\pm$ {1:.6f}\n".format( pars[0]*1e3, np.sqrt(cov[0,0]*1e3) ) )
+    log.write( "    $\sigma_y$ (\si{\micro\meter}): "+"{0:.6f} $\pm$ {1:.6f}\n\n".format( pars[1]*1e3, np.sqrt(cov[1,1]*1e3) ) )
 
     fig.savefig(out, bbox_inches = "tight")
 
@@ -203,8 +207,10 @@ def fit_z(nam=None, out="01fig.pdf", title=None):
 
     #log the results
     log = open("out.txt", "a+")
-    log.write( "    $\mu_z$ (mm):    {0:.2f} $\pm$ {1:.2f}\n".format( pars[0], np.sqrt(cov[0,0]) ) )
-    log.write( "    $\sigma_z$ (mm): {0:.2f} $\pm$ {1:.2f}\n".format( pars[1], np.sqrt(cov[1,1]) ) )
+    #log.write( "    $\mu_z$ (mm):    {0:.2f} $\pm$ {1:.2f}\n".format( pars[0], np.sqrt(cov[0,0]) ) )
+    #log.write( "    $\sigma_z$ (mm): {0:.2f} $\pm$ {1:.2f}\n".format( pars[1], np.sqrt(cov[1,1]) ) )
+    log.write( "    $\mu_z$ (mm):    {0:.4f} $\pm$ {1:.4f}\n".format( pars[0], np.sqrt(cov[0,0]) ) )
+    log.write( "    $\sigma_z$ (mm): {0:.4f} $\pm$ {1:.4f}\n".format( pars[1], np.sqrt(cov[1,1]) ) )
 
     fig.savefig(out, bbox_inches = "tight")
 
@@ -214,11 +220,10 @@ def fit_z(nam=None, out="01fig.pdf", title=None):
 def fit_xyz():
 
     #nam = "../sim_noy.root"
-    #nam = "../sim_y.root"
-    #nam = "../sim_5.root"
-    #nam = "../sim_10.root"
-    #nam = "../sim_18.root"
-    nam = "../sim.root"
+    #nam = "../sim_5x110.root"
+    #nam = "../sim_10x110.root"
+    nam = "../sim_18x110.root"
+    #nam = "../sim.root"
 
     #title = ", no y-angle"
     #title = ", y-angle included"
