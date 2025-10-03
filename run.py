@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 #import ctypes
 from ctypes import CDLL, c_double, c_void_p
@@ -82,7 +82,7 @@ def main():
     lib.sim_set_bins(sim, cf.int("nx"), cf("xmin"), cf("xmax"), cf.int("ny"), cf("ymin"), cf("ymax"), cf.int("nz"), cf("zmin"), cf("zmax"))
 
     #select the function
-    iplot = 4
+    iplot = 6
 
     func = []
     func.append( make_plot ) # 0
@@ -351,7 +351,8 @@ def create_plot_pairs(lib, sim, cross_angle, can, zpmax, time, outnam):
 
     leg = ut.prepare_leg(0.75, 0.73, 0.15, 0.22, tsiz)
     hle = TH1D()
-    hle.SetMarkerColor(rt.kBlue)
+    #hle.SetMarkerColor(rt.kBlue)
+    hle.SetMarkerColor(rt.kGreen+1)
     hle.SetMarkerStyle(rt.kFullCircle)
     hlp = TH1D()
     hlp.SetMarkerColor(rt.kRed)
@@ -408,7 +409,7 @@ def video_pairs(lib, sim, cross_angle):
     tmax = 0.6
     nstep = 200
 
-    out = "movie.mp4"
+    out = "movie.gif"
     #out = "movie.avi"
 
     #maximum for z pairs
@@ -432,11 +433,14 @@ def video_pairs(lib, sim, cross_angle):
         can.Clear()
 
         nam = "tmp/fig_"+"{0:04d}".format(i)+".png"
+        #nam = "tmp/fig_"+str(i)+".png"
         create_plot_pairs(lib, sim, cross_angle, can, zpmax, time, nam)
 
-    os.system("ffmpeg -r 30 -i tmp/fig_%04d.png "+out)
+    os.system("ffmpeg -i tmp/fig_%04d.png -r 25 "+out)
+    #os.system("ffmpeg -r 30 -i tmp/fig_%04d.png "+out)
+    #os.system("ffmpeg -r 30 -i tmp/fig_%d.png "+out)
     #os.system("ffmpeg -r 30 -i tmp/fig_%04d.png -q:v 2 "+out)
-    #os.system("rm -rf tmp")
+    os.system("rm -rf tmp")
 
 #video_pairs
 

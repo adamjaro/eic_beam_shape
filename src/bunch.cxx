@@ -52,7 +52,8 @@ bunch::bunch(int npart, double rmsx, double bsx, double rmsy, double bsy, double
   }
 
   gr.Set(npart);
-  gr.SetMarkerColor(kBlue);
+  //gr.SetMarkerColor(kBlue);
+  gr.SetMarkerColor(kGreen+1);
   gr.SetMarkerStyle(kFullCircle);
   //gr.SetMarkerSize(0.2);
   gr.SetMarkerSize(0.1);
